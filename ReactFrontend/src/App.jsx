@@ -28,6 +28,12 @@ const DynamicForm = () => {
     }]);
   };
 
+  const handleRemoveRow = (index) => {
+    const newRows = [...rows];
+    newRows.splice(index, 1);
+    setRows(newRows);
+  };
+
   const handleSubmit = async () => {
     const response = await fetch('http://localhost:5000/generate', {
       method: 'POST',
@@ -105,6 +111,7 @@ const DynamicForm = () => {
               />
             </>
           )}
+          <button onClick={() => handleRemoveRow(index)}>-</button>
         </div>
       ))}
       <button onClick={handleAddRow}>+</button>

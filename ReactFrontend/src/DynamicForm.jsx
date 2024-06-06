@@ -1,14 +1,14 @@
-
+// src/components/DynamicForm.jsx
 import React, { useState } from 'react';
 
-const Dynamic = () => {
-  const [rows, setRows] = useState([{ 
-    parameterName: '', 
-    startValue: '', 
-    minValue: '', 
-    type: 'Intraday', 
-    start: '', 
-    end: '' 
+const DynamicForm = () => {
+  const [rows, setRows] = useState([{
+    parameterName: '',
+    startValue: '',
+    minValue: '',
+    type: 'Intraday',
+    start: '',
+    end: ''
   }]);
 
   const handleChange = (index, field, value) => {
@@ -18,14 +18,20 @@ const Dynamic = () => {
   };
 
   const handleAddRow = () => {
-    setRows([...rows, { 
-      parameterName: '', 
-      startValue: '', 
-      minValue: '', 
-      type: 'Intraday', 
-      start: '', 
-      end: '' 
+    setRows([...rows, {
+      parameterName: '',
+      startValue: '',
+      minValue: '',
+      type: 'Intraday',
+      start: '',
+      end: ''
     }]);
+  };
+
+  const handleRemoveRow = (index) => {
+    const newRows = [...rows];
+    newRows.splice(index, 1);
+    setRows(newRows);
   };
 
   const handleSubmit = async () => {
@@ -105,6 +111,7 @@ const Dynamic = () => {
               />
             </>
           )}
+          <button onClick={() => handleRemoveRow(index)}>-</button>
         </div>
       ))}
       <button onClick={handleAddRow}>+</button>
@@ -113,4 +120,4 @@ const Dynamic = () => {
   );
 };
 
-export default Dynamic;
+export default DynamicForm;
