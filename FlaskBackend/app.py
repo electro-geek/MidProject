@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 from datetime import datetime, timedelta
+import xml.etree.ElementTree as ET
 import random
 
 app = Flask(__name__)
@@ -9,8 +10,9 @@ CORS(app)  # Enable CORS for all routes
 
 @app.route('/generate', methods=['POST'])
 def generate():
-    data = request.json
+    data = request.json['rows']
     results = {}
+    format = request.json['format']
 
     for item in data:
         parameter_name = item['parameterName']
@@ -48,6 +50,58 @@ def generate():
 
     # Save DataFrame to a CSV file
     df.to_csv('generated_data.csv', index_label='Timestamp/Date')
+
+    def XLSXconversion():
+        csv_file = 'generated_data.csv'
+        df = pd.read_csv(csv_file)
+
+        # Save as XLSX file
+        xlsx_file = 'DataInXlsx.xlsx'
+        df.to_excel(xlsx_file, index=False)
+
+    def Xmlconversion():
+        # Load CSV file
+        csv_file = 'generated_data.csv'
+        df = pd.read_csv(csv_file)
+
+        # Create XML structure
+        root = ET.Element('root')
+        for i, row in df.iterrows():
+            item = ET.SubElement(root, 'item')
+            for field in row.index:
+                field_element = ET.SubElement(item, field)
+                field_element.text = str(row[field])
+
+        # Save as XML file
+        tree = ET.ElementTree(root)
+        xml_file = 'GeneratedXMLFile.xml'
+        tree.write(xml_file)
+
+    def Jsonconversion():
+        csv_file = 'generated_data.csv'
+        df = pd.read_csv(csv_file)
+        json_file = 'GeneratedJsonFile.json'
+        df.to_json(json_file, orient='records', lines=True)
+
+    def PlainTextConversion():
+        csv_file = 'generated_data.csv'
+        with open(csv_file, 'r') as file:
+            csv_content = file.read()
+        txt_file = 'GeneratedDataTextFile.txt'
+        with open(txt_file, 'w') as file:
+            file.write(csv_content)
+
+    if format == "XLSX":
+        XLSXconversion()
+    
+    if format == "XML":
+        Xmlconversion()
+
+    if format == "Text":
+        PlainTextConversion()
+
+    if format == "JSON":
+        Jsonconversion()
 
     return jsonify(results), 200
 

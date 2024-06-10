@@ -10,6 +10,7 @@ const DynamicForm = () => {
     start: '',
     end: ''
   }]);
+  const [selectedFormat, setSelectedFormat] = useState('CSV'); // State to manage the selected format
 
   const handleChange = (index, field, value) => {
     const newRows = [...rows];
@@ -40,7 +41,7 @@ const DynamicForm = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(rows),
+      body: JSON.stringify({ rows, format: selectedFormat }), // Include selected format in the body
     });
 
     if (response.ok) {
@@ -115,6 +116,16 @@ const DynamicForm = () => {
         </div>
       ))}
       <button onClick={handleAddRow}>+</button>
+      <select
+        value={selectedFormat}
+        onChange={(e) => setSelectedFormat(e.target.value)}
+      >
+        <option value="CSV">CSV</option>
+        <option value="XLSX">XLSX</option>
+        <option value="JSON">JSON</option>
+        <option value="XML">XML</option>
+        <option value="Text">Text</option>
+      </select>
       <button onClick={handleSubmit}>Generate</button>
     </div>
   );
