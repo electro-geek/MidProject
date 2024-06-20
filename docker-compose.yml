@@ -1,0 +1,22 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./Reactfrontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Reactfrontend:/app
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./flaskbackend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./flaskbackend:/app
