@@ -100,7 +100,7 @@ const DynamicForm = () => {
             <>
               <input
                 type="date"
-                placeholder="Start Date"
+                placeholder="Start xyz"
                 value={row.start}
                 onChange={(e) => handleChange(index, 'start', e.target.value)}
               />
