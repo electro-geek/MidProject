@@ -5,18 +5,18 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./Reactfrontend
+      context: ./ReactFrontend
     ports:
       - "5173:5173"
     volumes:
-      - ./Reactfrontend:/app
+      - ./ReactFrontend:/app
     depends_on:
       - backend
 
   backend:
     build:
-      context: ./flaskbackend
+      context: ./FlaskBackend
     ports:
       - "5000:5000"
     volumes:
-      - ./flaskbackend:/app
+      - ./FlaskBackend:/app
